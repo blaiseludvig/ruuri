@@ -32,7 +32,7 @@ export default class GridController {
     if (!elements.length) {
       return
     }
-    this.grid.add(elements, {})
+    this.grid.add(elements, { index: 0 })
     elements.forEach((element) => this.registeredElements.add(element))
   }
 
