@@ -1,12 +1,3 @@
-// Redecalare forwardRef to restore type inference on the forwarded component
-// see: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forward_and_create_ref/#generic-forwardrefs
-declare module 'react' {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  function forwardRef<T, P = {}>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
-  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
-}
-
 import { useDeepCompareEffect } from '@react-hookz/web'
 import clsx from 'clsx'
 import { forEach, get, lowerFirst, merge, omit, pick } from 'lodash-es'
@@ -230,6 +221,13 @@ function DraggableGrid<T>(
   )
 }
 
-export default forwardRef(DraggableGrid)
+// eslint-disable-next-line @typescript-eslint/ban-types
+function fixedForwardRef<T, P = {}>(
+  render: (props: P, ref: React.Ref<T>) => React.ReactNode,
+): (props: P & React.RefAttributes<T>) => React.ReactNode {
+  return forwardRef(render) as any
+}
+
+export default fixedForwardRef(DraggableGrid)
 
 injectStyle()
